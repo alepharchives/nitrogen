@@ -16,6 +16,12 @@ render(ControlID, Record) ->
 
     wf:wire(Script),
 
+    TabEvent = #event{ delegate=?MODULE },
+    wf:wire(ControlID, [
+			TabEvent#event{ type=tabsselect, 
+					postback={select, Record#tabs.tag} } 
+		       ]),
+    
     Terms = #panel{
       class = "tabs " ++ wf:to_list(Record#tabs.class),
       style = Record#tabs.style,
@@ -30,7 +36,7 @@ render(ControlID, Record) ->
 		  body = Tab#tab.body } 
 	  || Tab <- Record#tabs.tabs]
      },
-    
+
     element_panel:render(ControlID, Terms).
 
 html_id(Id) ->
@@ -43,3 +49,7 @@ html_id(Id) ->
 	    wf_path:pop_path(),
 	    HtmlId
     end.
+
+event(Event) ->
+    (wf_platform:get_page_module()):tabs_event(Event),
+    ok.

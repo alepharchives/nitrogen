@@ -456,5 +456,13 @@ N.$sortblock = function(sortBlock, sortOptions, sortPostbackInfo) {
 }
 
 
+/*** TABS ***/
+
+N.$tabs = function(tabObj, tabOptions) {
+    jQuery(tabObj).tabs(tabOptions);
+}
+
+
+
 Nitrogen.$event_loop();
 Nitrogen.Page({ id : 'page' });

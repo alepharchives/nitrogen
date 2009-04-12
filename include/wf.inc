@@ -68,6 +68,9 @@
 -record(draggable, {?ELEMENT_BASE(element_draggable), tag, body=[], group, handle, clone=true, revert=true}).
 -record(droppable, {?ELEMENT_BASE(element_droppable), tag, body=[], accept_groups=all, active_class=active, hover_class=hover}).
 -record(gravatar, {?ELEMENT_BASE(element_gravatar), email="", size="80", rating="g", default=""}).
+-record(tabs, {?ELEMENT_BASE(element_tabs), tabs=[], options=[], tag}).
+-record(tab, {id=wf:temp_id(), title="No Title", body=[]}).
+
 
 %%% Controls %%%
 -define(CONTROL_BASE(Module), ?ELEMENT_BASE(Module), tag).
