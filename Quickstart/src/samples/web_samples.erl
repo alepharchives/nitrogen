@@ -26,7 +26,8 @@ column1() -> [
 	#link { text="Effects", url="/web/samples/effects" }, #br{}, 
 	#link { text="Drag and Drop", url="/web/samples/dragdrop" }, #br{}, 
 	#link { text="Sorting", url="/web/samples/sorting1" }, #br{}, 
-	#link { text="Nested Sorting", url="/web/samples/sorting2" }, #br{}
+	#link { text="Nested Sorting", url="/web/samples/sorting2" }, #br{},
+	#link { text="Tabs Pane", url="/web/samples/tabs" }, #br{}
 ].
 
 column2() -> [

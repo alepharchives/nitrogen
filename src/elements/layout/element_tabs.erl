@@ -16,11 +16,23 @@ render(ControlID, Record) ->
 
     wf:wire(Script),
 
-    TabEvent = #event{ delegate=?MODULE },
-    wf:wire(ControlID, [
-			TabEvent#event{ type=tabsselect, 
-					postback={select, Record#tabs.tag} } 
-		       ]),
+    case Record#tabs.tag of
+	undefined -> skip;
+	Tag ->
+	    wf:wire(ControlID, 
+		    [ #event{ type=Type, 
+			      postback={Type, Tag} }
+		      || Type <- [
+				  tabsselect,
+				  tabsload,
+				  tabsshow,
+				  tabsadd,
+				  tabsremove,
+				  tabsenable,
+				  tabsdisable
+				 ]]
+		   )
+    end,
     
     Terms = #panel{
       class = "tabs " ++ wf:to_list(Record#tabs.class),
@@ -49,7 +61,3 @@ html_id(Id) ->
 	    wf_path:pop_path(),
 	    HtmlId
     end.
-
-event(Event) ->
-    (wf_platform:get_page_module()):tabs_event(Event),
-    ok.

@@ -1,0 +1,24 @@
+-module (web_samples_tabs).
+-include ("wf.inc").
+-compile(export_all).
+
+main() -> #template { file="./wwwroot/onecolumn.html", bindings=[
+	{'Group', learn},
+	{'Item', samples}
+]}.
+
+title() -> "Tabs Pane Example".
+headline() -> "Tabs Pane Example".
+right() -> linecount:render().
+
+body() -> [
+     #tabs{ options=[ {collapsible, true} ],
+	    tabs=[
+		  #tab{ title="Tab 1", body=["Tab one body..."] },
+		  #tab{ title="Tab 2", body=#panel{ body=["Tab two body..."] }},
+		  #tab{ title=["Tab 3, with button =>", #button{ text="Press Me" }], 
+			body="Tab three body..." }
+		  ]}
+].
+	
+event(_) -> ok.

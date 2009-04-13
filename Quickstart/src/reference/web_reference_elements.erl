@@ -38,7 +38,8 @@ column1() ->
 		{ "/web/reference/elements/rounded_panel", "Rounded Panel" },
 		{ "/web/reference/elements/span", "Span" },
 		{ "/web/reference/elements/lightbox", "Lightbox" },
-		{ "/web/reference/elements/wizard", "Wizard" }
+		{ "/web/reference/elements/wizard", "Wizard" },
+		{ "/web/reference/elements/tabs", "Tabs Pane" }
 	],
 	
 	Tables = [
@@ -60,7 +61,7 @@ column1() ->
 		{ "/web/reference/elements/droppable", "Droppable" },
 		{ "/web/reference/elements/sortblock", "Sort Block" },
 		{ "/web/reference/elements/sortitem", "Sort Item" },
-        { "/web/reference/elements/gravatar", "Gravatar"}
+		{ "/web/reference/elements/gravatar", "Gravatar"}
 	],
 	
 	[
