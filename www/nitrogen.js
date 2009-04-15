@@ -458,8 +458,31 @@ N.$sortblock = function(sortBlock, sortOptions, sortPostbackInfo) {
 
 /*** TABS ***/
 
-N.$tabs = function(tabObj, tabOptions) {
-    jQuery(tabObj).tabs(tabOptions);
+N.$tab = function(tabObj, tabTag) {
+    tabObj.$tab_tag = tabTag;
+}
+
+N.$tabs = function(tabsObj, tabsOptions, tabsPostbackInfo) {
+    if (tabsPostbackInfo)
+    {
+	var n = Nitrogen.$lookup(Nitrogen.$current_id);
+	var evt_fun = function(ev, ui) {
+	    n.$queue_event(this.id, tabsPostbackInfo, 
+			   "event=" + ev.type +
+			   "&tab_index=" + ui.index +
+			   "&tab_tag=" + ui.panel.$tab_tag);
+	}
+
+	tabsOptions.select = evt_fun;
+	tabsOptions.load = evt_fun;
+	tabsOptions.show = evt_fun;
+	tabsOptions.add = evt_fun;
+	tabsOptions.remove = evt_fun;
+	tabsOptions.enable = evt_fun;
+	tabsOptions.disable = evt_fun;
+    }
+
+    jQuery(tabsObj).tabs(tabsOptions);
 }
 
 

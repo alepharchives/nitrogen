@@ -12,9 +12,10 @@ headline() -> "Tabs Pane Example".
 right() -> linecount:render().
 
 body() -> [
-     #tabs{ options=[ {collapsible, true} ],
+     #tabs{ tag=tabsTag,
+	    options=[ {collapsible, true} ],
 	    tabs=[
-		  #tab{ title="Tab 1", body=["Tab one body..."] },
+		  #tab{ tag=tabTag, title="Tab 1", body=["Tab one body..."] },
 		  #tab{ title="Tab 2", body=#panel{ body=["Tab two body..."] }},
 		  #tab{ title=["Tab 3, with button =>", #button{ text="Press Me" }], 
 			body="Tab three body..." }
@@ -22,3 +23,6 @@ body() -> [
 ].
 	
 event(_) -> ok.
+
+tabs_event(_Evt, _TabsTag, _TabTag, _Index) ->
+    ok.

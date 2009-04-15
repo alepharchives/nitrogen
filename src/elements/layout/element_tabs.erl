@@ -9,47 +9,56 @@
 reflect() -> record_info(fields, tabs).
 
 render(ControlID, Record) -> 
+    PickledPostBackInfo = case Record#tabs.tag of
+			      undefined -> "false";
+			      Tag ->
+				  [wf:wire(wf:f(
+					    "Nitrogen.$tab(obj('~s'), '~s');",
+					     [R#tab.id, wf_utils:pickle(R#tab.tag)]))
+				   || R <- Record#tabs.tabs, R#tab.tag /= undefined],
+
+				  wf:f("'~s'",
+				       [action_event:make_postback_info(
+					  Tag, tabsevent,
+					  ControlID, ControlID,
+					  ?MODULE)
+				       ])
+			  end,
+    
     Options = action_jquery_effect:options_to_js(
 		Record#tabs.options),
-    Script = wf:f("Nitrogen.$tabs(obj('~s'), ~s);",
-		  [ControlID, Options]),
+    
+    Script = wf:f("Nitrogen.$tabs(obj('~s'), ~s, ~s);",
+		  [ControlID, Options, PickledPostBackInfo]),
 
     wf:wire(Script),
-
-    case Record#tabs.tag of
-	undefined -> skip;
-	Tag ->
-	    wf:wire(ControlID, 
-		    [ #event{ type=Type, 
-			      postback={Type, Tag} }
-		      || Type <- [
-				  tabsselect,
-				  tabsload,
-				  tabsshow,
-				  tabsadd,
-				  tabsremove,
-				  tabsenable,
-				  tabsdisable
-				 ]]
-		   )
-    end,
     
     Terms = #panel{
       class = "tabs " ++ wf:to_list(Record#tabs.class),
       style = Record#tabs.style,
-      body = ["<ul>"]
-      ++ [[wf:f("<li><a href='#~s'>", [html_id(Tab#tab.id)]),
-	   Tab#tab.title,
-	   "</a></li>"]
-	  || Tab <- Record#tabs.tabs]
-      ++ ["</ul>"]
-      ++ [#panel{ id = Tab#tab.id,
-		  class = "tab",
-		  body = Tab#tab.body } 
-	  || Tab <- Record#tabs.tabs]
+      body = [ 
+	       #list{ body=[
+			    #listitem{ body=#link{ url="#" ++ html_id(Tab#tab.id),
+						   body=Tab#tab.title } }
+			    || Tab <- Record#tabs.tabs ] },
+	       [#panel{ id = Tab#tab.id,
+			class = "tab",
+			body = Tab#tab.body } 
+		|| Tab <- Record#tabs.tabs]
+	      ]
      },
-
+    
     element_panel:render(ControlID, Terms).
+
+event(TabsTag) ->
+    [EventStr] = wf:q(event),
+    [IndexStr] = wf:q(tab_index),
+    [TabItem] = wf:q(tab_tag),
+    Event = list_to_atom(EventStr),
+    Index = list_to_integer(IndexStr),
+    TabTag = wf:depickle(TabItem),
+    Module = wf_platform:get_page_module(),
+    Module:tabs_event(Event, TabsTag, TabTag, Index).
 
 html_id(Id) ->
     case wf_path:is_temp_element(Id) of
