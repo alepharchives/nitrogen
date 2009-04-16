@@ -110,6 +110,9 @@ a:hover { color: #E35; text-decoration: underline; }
 .content .column1 { width: 47%; margin-right: 3%; float: left; }
 .content .column2 { width: 47%; float: left; }
 
+.tabs ul li { list-style-type: none; }
+
+
 /*** FOOTER ***/
 
 .footer { 

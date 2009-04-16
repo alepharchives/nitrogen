@@ -141,3 +141,11 @@ textarea.LV_invalid_field:hover,
 textarea.LV_invalid_field:active {
     border: 1px solid #CC0000;
 }*/
+
+
+/*** TABS ***/
+
+.ui-tabs .ui-tabs-hide {
+     display: none;
+}
+

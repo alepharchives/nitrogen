@@ -15,7 +15,7 @@
 	tabs=[
 		#tab{ tag=tabTag, title=\"Tab 1\", body=[\"Tab one body...\"] },
  		#tab{ title=\"Tab 2\", body=#panel{ body=[\"Tab two body...\"] }},
- 		#tab{ title=[\"Tab 3, with button =>\", #button{ text=\"Press Me\" }], 
+ 		#tab{ title=#span{ text=\"<Tab 3>\" },
 		      body=\"Tab three body...\" }
  	]}
 "},
