@@ -21,6 +21,8 @@
 {attributes, [
 
 	{"text", "string", "The text to display."},
+
+	{"title", "string", "The title for this link. Not rendered on screen, but may be used for other purposes."},
 	
 	{"body", "Nitrogen elements", "Instead of text, specify one or more Nitrogen elements (such as an #image) to wrap in a link."},
 	

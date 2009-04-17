@@ -16,7 +16,8 @@
 		#tab{ tag=tabTag, title=\"Tab 1\", body=[\"Tab one body...\"] },
  		#tab{ title=\"Tab 2\", body=#panel{ body=[\"Tab two body...\"] }},
  		#tab{ title=#span{ text=\"<Tab 3>\" },
-		      body=\"Tab three body...\" }
+		      url=\"some/path/to-tab-data\",
+		      body=\"This body will be replaced by data from ajax call to above url.\" }
  	]}
 "},
 
@@ -26,7 +27,7 @@
 	     
 	{"tag", "Erlang term", "Tag used in event postbacks. Note: no events will be sent if tag is omitted."},
 	{"options", "list", "To Be Written. See jQuery UI docs: http://jqueryui.com/demos/tabs/"},
-	{"tabs", "list of tab elements", "Each tab should have a title and a body. Ajax loading not yet supported."}
+	{"tabs", "list of tab elements", "Each tab should have a title and a body. If url is present, then the body is loaded from that url with ajax."}
 ]},
 
 {events, [
