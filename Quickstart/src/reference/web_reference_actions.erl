@@ -59,7 +59,8 @@ column2() ->
 		{ "/web/reference/actions/base", "(Base Action)" },
 		{ "/web/reference/actions/event", "Event" },
 		{ "/web/reference/actions/script", "Script" },
-		{ "/web/reference/actions/validate", "Validate" }
+		{ "/web/reference/actions/validate", "Validate" },
+		{ "/web/reference/actions/tab", "Tabs" }
 	],
 	
 	[

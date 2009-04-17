@@ -1,0 +1,53 @@
+[
+
+{title, "Tab Actions"},
+
+{see_also, [base]},
+
+{usage, "
+	wf:wire(myTabs, #tab_destroy{})
+	<p>
+	wf:wire(myTabs, #tab_disable{ tab=0 })
+	<p>
+	wf:wire(myTabs, #tab_enable{ tab=0 })
+	<p>
+	wf:wire(myTabs, #tab_select{ tab=3 })
+	<p>
+	wf:wire(myTabs, #tab_option{ key=collapsible, value=true })
+	<p>
+	wf:wire(myTabs, #tab_add{ url=\"?q=tab\", label=\"My New Tab\", index=0 })
+	<p>
+	wf:wire(myTabs, #tab_remove{ tab=2 })
+	<p>
+	wf:wire(myTabs, #tab_rotate{ ms=2000, continuing=true })
+	<p>
+	wf:wire(myTabs, #tab_abort{}) % abort tab rotate
+	<p>
+	wf:wire(myTabs, #tab_load{ tab=4 })
+	<p>
+	wf:wire(myTabs, #tab_url{ tab=1, url=\"new-tab-url\" })
+
+"},
+
+
+{description, "
+	      These actions operate on a tabs pane (#tabs{}) or one of its tabs.
+	      <p>
+	      Notice: Not all attributes apply to all tab actions. See usage above.
+
+"},
+
+{attributes, [
+	{"tab", "integer", "Tab index for actions that operate on a specific tab."},
+	{"url", "string", "A relative or absolute local url. No cross domain."},
+	{"label", "string", "New tab caption."},
+	{"index", "integer", "Optional attribute for #tab_add. Insertion index for new tab. Default add to end of tab list."},
+	{"key", "atom", "A valid option key. See the tabs element documentation."},
+	{"value", "bool, integer, string", "Option value for key."},
+	{"ms", "integer", "Number of milliseconds to stay on each tab while rotating."},
+	{"continuing", "bool", "Optional attribute for #tab_rotate. Default false. If set to true, rotate will continue even after the user has selected a tab."}
+]},
+
+{events, []}
+
+].

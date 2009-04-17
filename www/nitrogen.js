@@ -467,10 +467,17 @@ N.$tabs = function(tabsObj, tabsOptions, tabsPostbackInfo) {
     {
 	var n = Nitrogen.$lookup(Nitrogen.$current_id);
 	var evt_fun = function(ev, ui) {
+	    var tag;
+	    if (ui.index >= 0) {
+		tag = ui.panel.$tab_tag;
+	    } else {
+		tag = tabsObj.$tab_tag;
+	    }
+	    
 	    n.$queue_event(this.id, tabsPostbackInfo, 
 			   "event=" + ev.type +
 			   "&tab_index=" + ui.index +
-			   "&tab_tag=" + ui.panel.$tab_tag);
+			   "&tab_tag=" + tag);
 	}
 
 	tabsOptions.select = evt_fun;

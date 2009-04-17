@@ -100,6 +100,18 @@
 -record(animate, {?ACTION_BASE(action_animate), options=[], speed=500, easing=swing}).
 -record(buttonize, {?ACTION_BASE(action_buttonize)}).
 -record(comet_start, {?ACTION_BASE(action_comet_start)}).
+-record(tab_destroy, {?ACTION_BASE(action_tabs_methods)}).
+-record(tab_disable, {?ACTION_BASE(action_tabs_methods), tab=-1}).
+-record(tab_enable, {?ACTION_BASE(action_tabs_methods), tab=-1}).
+-record(tab_option, {?ACTION_BASE(action_tabs_methods), key, value}).
+-record(tab_add, {?ACTION_BASE(action_tabs_methods), url, label, index}).
+-record(tab_remove, {?ACTION_BASE(action_tabs_methods), tab}).
+-record(tab_select, {?ACTION_BASE(action_tabs_methods), tab}).
+-record(tab_load, {?ACTION_BASE(action_tabs_methods), tab}).
+-record(tab_url, {?ACTION_BASE(action_tabs_methods), tab, url}).
+%-record(tab_length, {?ACTION_BASE(action_tabs_methods)}).
+-record(tab_abort, {?ACTION_BASE(action_tabs_methods)}).
+-record(tab_rotate, {?ACTION_BASE(action_tabs_methods), ms, continuing=false}).
 
 %%% Validators %%%
 -define(VALIDATOR_BASE(Module), module=Module, text="Failed.").

@@ -13,10 +13,11 @@ render(ControlID, Record) ->
 			      undefined -> "false";
 			      Tag ->
 				  [wf:wire(wf:f(
-					    "Nitrogen.$tab(obj('~s'), '~s');",
+					    "Nitrogen.$tab(obj('~s'), '~s')",
 					     [R#tab.id, wf_utils:pickle(R#tab.tag)]))
-				   || R <- Record#tabs.tabs, R#tab.tag /= undefined],
-
+				   || R <- [#tab{ id=ControlID, tag=Record#tabs.tag }
+					    |Record#tabs.tabs], R#tab.tag /= undefined],
+				  
 				  wf:f("'~s'",
 				       [action_event:make_postback_info(
 					  Tag, tabsevent,
@@ -28,7 +29,7 @@ render(ControlID, Record) ->
     Options = action_jquery_effect:options_to_js(
 		Record#tabs.options),
     
-    Script = wf:f("Nitrogen.$tabs(obj('~s'), ~s, ~s);",
+    Script = wf:f("Nitrogen.$tabs(obj('~s'), ~s, ~s)",
 		  [ControlID, Options, PickledPostBackInfo]),
 
     wf:wire(Script),
