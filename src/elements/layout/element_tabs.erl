@@ -37,16 +37,15 @@ render(ControlID, Record) ->
     Terms = #panel{
       class = "tabs " ++ wf:to_list(Record#tabs.class),
       style = Record#tabs.style,
-      body = [ 
-	       #list{ body=[
-			    #listitem{ body=#link{ url="#" ++ html_id(Tab#tab.id),
-						   body=Tab#tab.title } }
-			    || Tab <- Record#tabs.tabs ] },
-	       [#panel{ id = Tab#tab.id,
-			class = "tab",
-			body = Tab#tab.body } 
-		|| Tab <- Record#tabs.tabs]
-	      ]
+      body = [
+	      #list{ body=[
+			   #listitem{ body=tab_link(Tab) }
+			   || Tab <- Record#tabs.tabs ] },
+	      [#panel{ id = Tab#tab.id,
+		       class = "tab",
+		       body = Tab#tab.body } 
+	       || Tab <- Record#tabs.tabs]
+	     ]
      },
     
     element_panel:render(ControlID, Terms).
@@ -71,3 +70,8 @@ html_id(Id) ->
 	    wf_path:pop_path(),
 	    HtmlId
     end.
+
+tab_link(#tab{ url=undefined, id=Id, title=Title }) ->
+    #link{ url="#" ++ html_id(Id), body=Title };
+tab_link(#tab{ url=Url, id=Id, title=Title }) ->
+    #link{ url=Url, title=html_id(Id), body=Title }.

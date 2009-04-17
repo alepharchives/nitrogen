@@ -34,6 +34,6 @@ basic_test_() ->
    ?_assert(eunit_helper:regexpMatch("<a id='4' href='javascript:' class='link'><img id='.*?' class='image' src='/path/to/image.gif'/></a>",
                                      new_link_4())),
    ?_assertEqual("<a id='5' href='not_javascript' class='link'>LINK&nbsp;TEXTA LINK BODY</a>", new_link_5()),
-   ?_assertEqual([module,id,actions,show_if,class,style,text,body, html_encode,url,postback],
+   ?_assertEqual([module,id,actions,show_if,class,style,text,title,body,html_encode,url,postback],
 	 element_link:reflect())
   ].
