@@ -155,6 +155,16 @@ temp_id() -> wf_path:temp_id().
 to_js_id(Path) -> wf_path:to_js_id(Path).
 
 
+%%% WF_PARALLELL_STATE %%%
+
+get() -> wf_parallell_state:get().
+get(Key) -> wf_parallell_state:get(Key).
+get_keys() -> wf_parallell_state:get_keys().
+put(Key, Value) -> wf_parallell_state:put(Key, Value).
+erase() -> wf_parallell_state:erase().
+erase(Key) -> wf_parallell_state:erase(Key).
+
+						 
 %%% OTHER %%%
 
 flash(Terms) -> element_flash:add_flash(Terms).

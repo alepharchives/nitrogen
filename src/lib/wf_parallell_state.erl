@@ -5,7 +5,7 @@
 -module (wf_parallell_state).
 -include ("wf.inc").
 -export ([
-	  start/0, state/1,
+	  init/0, state/1,
 
 	  get/0,
 	  get/1,
@@ -18,11 +18,16 @@
 	 ]).
 
 
-start() ->
-    register(
-      ?MODULE,
-      spawn(?MODULE, state, [[]])
-     ).
+init() ->
+    case whereis(?MODULE) of
+	undefined ->
+	    register(
+	      ?MODULE,
+	      spawn(?MODULE, state, [[]])
+	     );
+	Pid ->
+	    Pid
+    end.
 
 state(State) ->
     receive
@@ -57,24 +62,22 @@ get_response() ->
 	    Res
     end.
 
-lookup(From, State) ->
-    case lists:keysearch(From, 1, State) of
-	{value, Dict} ->
-	    Dict;
+search(Key, List, Default) ->
+    case lists:keysearch(Key, 1, List) of
+	{value, Res} ->
+	    element(2, Res);
 	false ->
-	    []
+	    Default
     end.
     
+lookup(From, State) ->
+    search(From, State, []).
+
 lookup(From, State, Key) ->
     lookup_value(lookup(From, State), Key).
 
 lookup_value(Dict, Key) ->
-    case lists:keysearch(Key, 1, Dict) of
-	{value, Res} ->
-	    Res;
-	false ->
-	    undefined
-    end.
+    search(Key, Dict, undefined).
 
 do_get(From, State) ->
     send_response(From, lookup(From, State)).
@@ -118,6 +121,8 @@ do_erase(From, State, Key) ->
 	    State
     end.
 
+
+%%% API %%%
 
 get() ->
     ?MODULE!{get, self()},

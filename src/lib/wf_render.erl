@@ -18,11 +18,11 @@
 ]).
 
 me_var() -> 
-	ID = case get(current_id) of
+	ID = case wf:get(current_id) of
 		undefined -> "";
 		Other -> Other
 	end,
-	Path = get(current_path),
+	Path = wf:get(current_path),
 	Path1 = wf_path:to_js_id(Path),
 	wf:f("Nitrogen.$current_id='~s';Nitrogen.$current_path='~s';", [ID, Path1]).
 
@@ -87,14 +87,14 @@ render_actions(TriggerPath, TargetPath, Term) when is_tuple(Term) ->
 			end,
 	
 			% Set the new path...
-			OldPath = get(current_path),
-			put(current_path, TargetPath1),
+			OldPath = wf:get(current_path),
+			wf:put(current_path, TargetPath1),
 			
 			% Render the action...
 			Script = lists:flatten([Module:render_action(wf_path:to_html_id(TriggerPath1), wf_path:to_html_id(TargetPath1), Term)]),
 			
 			% Restore the old path...
-			put(current_path, OldPath),
+			wf:put(current_path, OldPath),
 			Script;
 
 		false -> 
@@ -108,8 +108,8 @@ insert_top(TargetPath, Terms) -> update(TargetPath, Terms, "Nitrogen.$insert_top
 insert_bottom(TargetPath, Terms) -> update(TargetPath, Terms, "Nitrogen.$insert_bottom(obj('me'), \"~s\");").
 
 update(TargetPath, Terms, JSFormatString) ->
-	UpdateQueue = get(wf_update_queue),
-	put(wf_update_queue, [{TargetPath, Terms, JSFormatString}|UpdateQueue]),
+	UpdateQueue = wf:get(wf_update_queue),
+	wf:put(wf_update_queue, [{TargetPath, Terms, JSFormatString}|UpdateQueue]),
 	ok.
 
 	
@@ -123,6 +123,6 @@ wire(TriggerPath, Actions) ->
 
 wire(TriggerPath, TargetPath, Actions) ->	
 	% Add to the queue of wired actions. These will be rendered in get_script().
-	ActionQueue = get(wf_action_queue),
-	put(wf_action_queue, [{TriggerPath, TargetPath, Actions}|ActionQueue]),
+	ActionQueue = wf:get(wf_action_queue),
+	wf:put(wf_action_queue, [{TriggerPath, TargetPath, Actions}|ActionQueue]),
 	ok.

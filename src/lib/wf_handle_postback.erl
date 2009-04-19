@@ -22,8 +22,8 @@ handle_request(Module) ->
 	
 	% Setup the response...
 	wf_platform:set_content_type("application/javascript"),
-	put(current_id, ObjectID),
-	put(current_path, wf_path:to_path(TargetID)),
+	wf:put(current_id, ObjectID),
+	wf:put(current_path, wf_path:to_path(TargetID)),
 	
 	% Do the event...
 	case EventType of

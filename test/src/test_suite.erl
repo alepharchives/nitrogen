@@ -5,6 +5,8 @@
 -include_lib("eunit/include/eunit.hrl").
 
 all_test_() ->
+    wf_parallell_state:init(),
+
   [{module, element_br_test},
    {module, element_hr_test},
    {module, element_image_test},

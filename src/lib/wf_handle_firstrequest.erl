@@ -10,11 +10,11 @@ handle_request(Module) ->
 	% Set the initial path...
 	case wf:q(object_id) of
 		[ObjectID] ->
-			put(current_id, ObjectID),
-			put(current_path, [ObjectID, page]);
+			wf:put(current_id, ObjectID),
+			wf:put(current_path, [ObjectID, page]);
  		_ ->
-			put(current_id, "page"),
-			put(current_path, [page])
+			wf:put(current_id, "page"),
+			wf:put(current_path, [page])
 	end,
 
 	% Run the request and get the response body...

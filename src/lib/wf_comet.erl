@@ -49,10 +49,10 @@ comet(Type, Function) ->
 	% Make sure the comet loop is running...
 	ensure_comet_loop(),
 	
-	CurrentState = get(),
+	CurrentState = wf:get(),
 	F = fun() ->
 		% Copy state to the new process...
-		[put(X, Y) || {X, Y} <- CurrentState],
+		[wf:put(X, Y) || {X, Y} <- CurrentState],
 		reset_nitrogen_state(),		
 		
 		% HACK - We don't know if the page has flash or not,
@@ -83,7 +83,7 @@ comet_flush() ->
 	Content = wf_script:get_script(false),
 
 	% See if there are redirects...
-	RedirectUrl = get(wf_redirect),
+	RedirectUrl = wf:get(wf_redirect),
 	IsRedirect = RedirectUrl /= [] andalso RedirectUrl /= undefined,
 
 	% Get the content to send back...
@@ -102,7 +102,7 @@ comet_flush() ->
 reset_nitrogen_state() ->
 	% Clear some state variables...
 	L = [wf_action_queue, wf_update_queue, wf_content_script, wf_script, wf_paths, wf_headers],
-	[put(X, []) || X <- L].
+	[wf:put(X, []) || X <- L].
 
 
 get_content() ->

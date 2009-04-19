@@ -8,6 +8,7 @@
 
 init() -> 
 	% wf_cache:init(),
+    wf_parallell_state:init(),
 	atomize_pages(),
 	ok.
 

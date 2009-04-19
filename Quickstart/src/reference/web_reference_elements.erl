@@ -7,23 +7,23 @@ main() ->
 	Bindings = [{'Group', reference}, {'Item', elements}],
 	case PathInfo of 
 		[] -> 
-			put(title, "Nitrogen Element Reference"),
+			wf:put(title, "Nitrogen Element Reference"),
 			#template { file="./wwwroot/twocolumn.html", bindings=Bindings };
 		_ -> 
 			Terms = read_file("./reference/elements", PathInfo, "txt"),
 			case Terms of 
 				[Term] -> 
 					Term1 = [{Key, trim(Value)} || {Key, Value} <- Term],
-					put(title, proplists:get_value(title, Term1)),
-					put(term, Term1),
+					wf:put(title, proplists:get_value(title, Term1)),
+					wf:put(term, Term1),
 					#template { file="./wwwroot/onecolumn.html", bindings=Bindings };
 				_ -> 
 					[]
 			end
 	end.
 	
-title() -> get(title).
-headline() -> get(title).
+title() -> wf:get(title).
+headline() -> wf:get(title).
 
 get_binding_map() -> {link@url, link@text}.
 get_binding_body() -> [
@@ -111,7 +111,7 @@ column2() ->
 	].
 
 body() ->
-	Term = get(term),
+	Term = wf:get(term),
 	TransformSeeAlso = fun(SeeAlso, Acc) -> 
 		SeeAlso1 = wf:to_list(SeeAlso),
 		{{SeeAlso1, SeeAlso1}, Acc, []} 

@@ -25,7 +25,7 @@ continue(Tag, Function, Interval, Timeout) ->
 	Pid.
 	
 register(Pid, Interval) ->
-	TargetID = get(current_path),
+	TargetID = wf:get(current_path),
 	wf:wire(#event { type=continuation, delay=Interval, target=TargetID, postback=Pid }).	
 
 get_result(Pid) ->

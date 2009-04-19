@@ -70,7 +70,7 @@ ensure_session_is_alive(Pid, Unique) ->
 		{ok, Pid} ->
 			case ping(Pid) of
 				ok ->
-					put(wf_session, Pid),
+					wf:put(wf_session, Pid),
 					drop_session_cookie(Pid, Unique);
 				timeout ->
 					sign_key()
@@ -82,7 +82,7 @@ ensure_session_is_alive(Pid, Unique) ->
 sign_key() -> 	
 	Unique = erlang:make_ref(),
 	{ok, Pid} = wf_session_server:sign_key(Unique),
-	put(wf_session, Pid),
+	wf:put(wf_session, Pid),
 	drop_session_cookie(Pid, Unique).
 
 drop_session_cookie(Pid, Unique) ->
@@ -90,7 +90,7 @@ drop_session_cookie(Pid, Unique) ->
 	Timeout = nitrogen:get_session_timeout(),
 	wf_platform:set_cookie(wf, Session, "/", Timeout).
 
-get_session_pid() -> get(wf_session).
+get_session_pid() -> wf:get(wf_session).
 
 
 %%% gen_server callbacks %%%

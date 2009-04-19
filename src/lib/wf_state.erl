@@ -17,36 +17,36 @@ restore_state() ->
 	case DomState of 
 		undefined -> ignore;
 		_ ->
-			put(wf_state, wf:depickle(DomState))
+			wf:put(wf_state, wf:depickle(DomState))
 	end.
 
 %%% STATE %%%
 
 %state/1 - Get the value for Key.
 state(Key) ->
-	case lists:keysearch(Key, 1, get(wf_state)) of
+	case lists:keysearch(Key, 1, wf:get(wf_state)) of
 		{value, {Key, Value}} -> Value;
 		false -> undefined
 	end.
 
 %state/2 - Set the value for key. Use undefined to delete the value.
 state(Key, undefined) ->
-	case lists:keytake(Key, 1, get(wf_state)) of
-		{value, _, State1} -> put(wf_state, State1);
+	case lists:keytake(Key, 1, wf:get(wf_state)) of
+		{value, _, State1} -> wf:put(wf_state, State1);
 		false -> undefined
 	end,	
 	undefined;
 
 state(Key, Value) ->
-	State = lists:keystore(Key, 1, get(wf_state), {Key, Value}),
-	put(wf_state, State),
+	State = lists:keystore(Key, 1, wf:get(wf_state), {Key, Value}),
+	wf:put(wf_state, State),
 	Value.
 
 clear_state() ->
-	put(wf_state, []).
+	wf:put(wf_state, []).
 	
 get_state_script() ->
-	DomState = get(wf_state),
+	DomState = wf:get(wf_state),
 	[
 		wf:me_var(), 
 		wf:f("Nitrogen.$set_dom_state(\"~s\");~n", [wf_utils:pickle(DomState)])

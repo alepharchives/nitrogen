@@ -119,13 +119,13 @@ get_header(Header) ->
 
 build_response() ->
 	% Get vars...
-	ContentType = get(wf_content_type),
-	Body = get(wf_response_body),
+	ContentType = wf:get(wf_content_type),
+	Body = wf:get(wf_response_body),
 
 	% Send the yaws response...
 	lists:flatten([
-		{status, get(wf_response_code)},
-		get(wf_headers),
+		{status, wf:get(wf_response_code)},
+		wf:get(wf_headers),
 		{content, ContentType, Body}
 	]).
 

@@ -34,7 +34,7 @@ check_request_method(Module) ->
 		'GET' -> wf_platform:parse_get_args();
 		'POST' -> wf_platform:parse_post_args()
 	end,
-	put(request_query, Query),
+	wf:put(request_query, Query),
 	wf_query:prepare_request_query_paths(Query),
 
 	% Check if this is the first request or a postback...
@@ -47,7 +47,7 @@ check_request_method(Module) ->
 reset_response(Module, PathInfo) ->
 	% Set up process dictionary...
 	L = [wf_action_queue, wf_update_queue, wf_content_script, wf_script, wf_paths, wf_state, wf_headers],
-	[put(X, []) || X <- L],
+	[wf:put(X, []) || X <- L],
 	
 	% Response defaults...
 	wf:state(validators, []),

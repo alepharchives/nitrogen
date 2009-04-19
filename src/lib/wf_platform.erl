@@ -37,13 +37,13 @@
 
 %%% INIT PLATFORMS %%%
 init(PlatformModule, Request) ->
-	put(wf_platform_module, PlatformModule),
-	put(wf_request, Request),
+	wf:put(wf_platform_module, PlatformModule),
+	wf:put(wf_request, Request),
 	ok.
 	
 do(Method) -> do(Method, []).
 do(Method, Args) ->
-	PlatformModule = get(wf_platform_module),
+	PlatformModule = wf:get(wf_platform_module),
 	erlang:apply(PlatformModule, Method, Args).
 
 
@@ -51,12 +51,12 @@ do(Method, Args) ->
 %%% GET PLATFORM INFO %%%
 
 get_platform() -> do(get_platform).
-get_request() -> get(wf_request).
+get_request() -> wf:get(wf_request).
 get_request_body() -> do(get_request_body).
-get_page_module() -> get(wf_page_module).
-set_page_module(Module) -> put(wf_page_module, Module).
-get_path_info() -> get(wf_path_info).
-set_path_info(PathInfo) -> put(wf_path_info, PathInfo).
+get_page_module() -> wf:get(wf_page_module).
+set_page_module(Module) -> wf:put(wf_page_module, Module).
+get_path_info() -> wf:get(wf_path_info).
+set_path_info(PathInfo) -> wf:put(wf_path_info, PathInfo).
 
 get_raw_path() -> do(get_raw_path).
 get_querystring() -> do(get_querystring).
@@ -87,7 +87,7 @@ set_cookie(Key, Value) ->
 	
 set_cookie(Key, Value, Path, MinutesToLive) ->
 	Header = create_cookie(Key, Value, Path, MinutesToLive),
-	put(wf_headers, [Header|get(wf_headers)]),
+	wf:put(wf_headers, [Header|wf:get(wf_headers)]),
 	ok.
 	
 create_cookie(Key, Value, Path, MinutesToLive) ->
@@ -103,7 +103,7 @@ set_header(Key, Value) ->
 	Key1 = wf:to_list(Key),
 	Value1 = wf:to_list(Value),
 	Header = do(create_header, [Key1, Value1]),
-	put(wf_headers, [Header|get(wf_headers)]),
+	wf:put(wf_headers, [Header|wf:get(wf_headers)]),
 	ok.
 	
 
@@ -139,11 +139,11 @@ request(Module) ->
 %%% RESPONSE %%%
 
 clear_redirect() -> set_redirect(undefined).
-set_redirect(Url) -> put(wf_redirect, Url).
-set_response_code(Code) -> put(wf_response_code, Code).
-set_content_type(ContentType) -> put(wf_content_type, ContentType).
+set_redirect(Url) -> wf:put(wf_redirect, Url).
+set_response_code(Code) -> wf:put(wf_response_code, Code).
+set_content_type(ContentType) -> wf:put(wf_content_type, ContentType).
 
-set_response_body(Body) -> put(wf_response_body, Body).
+set_response_body(Body) -> wf:put(wf_response_body, Body).
 	
 build_response() -> 
 	% Handle any redirects...
@@ -155,7 +155,7 @@ build_response() ->
 %%% REDIRECTS %%%
 	
 handle_redirects() ->
-	case get(wf_redirect) of
+	case wf:get(wf_redirect) of
 		undefined -> ignore;
 		Url -> 
 			Redirect = build_redirect(Url),

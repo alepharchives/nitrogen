@@ -15,9 +15,9 @@
 
 %%% CURRENT PATH %%%
 
-get_path() -> get(current_path).
-push_path(ID) -> put(current_path, [ID|get(current_path)]).
-pop_path() -> put(current_path, tl(get(current_path))).
+get_path() -> wf:get(current_path).
+push_path(ID) -> wf:put(current_path, [ID|wf:get(current_path)]).
+pop_path() -> wf:put(current_path, tl(wf:get(current_path))).
 
 
 % A Path is of the form [childcontrol, control, parentcontrol, root].

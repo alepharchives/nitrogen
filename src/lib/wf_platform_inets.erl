@@ -137,9 +137,9 @@ create_header(Key, Value) ->
 build_response() ->
 	% Get vars...
 	Info = wf_platform:get_request(),
-	ResponseCode = get(wf_response_code),
-	ContentType = get(wf_content_type),
-	Body = get(wf_response_body),
+	ResponseCode = wf:get(wf_response_code),
+	ContentType = wf:get(wf_content_type),
+	Body = wf:get(wf_response_body),
 	Size = integer_to_list(httpd_util:flatlength(Body)),
 	
 	% Assemble headers...
@@ -147,7 +147,7 @@ build_response() ->
 		{code, ResponseCode},
 		{content_type, ContentType},
 		{content_length, Size},
-		get(wf_headers)
+		wf:get(wf_headers)
 	]),		
 
 	% Send the inets response...

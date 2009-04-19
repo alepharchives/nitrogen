@@ -29,7 +29,7 @@ render_action(TriggerPath, TargetPath, Record) ->
 	end.
 	
 make_postback_info(Tag, EventType, TriggerPath, TargetPath, Delegate) ->
-	ObjectID = get(current_id),
+	ObjectID = wf:get(current_id),
 	Delegate1 = case Delegate of
 		undefined -> wf_platform:get_page_module();
 		_ -> Delegate

@@ -37,7 +37,7 @@ render(_ControlID, Record) ->
 	IsWindexMode = wf:q(windex) == ["true"],
 	case IsWindexMode of
 		true ->	[
-			wf:f("Nitrogen.$lookup('~s').$update(\"~s\");", [get(current_id), wf_utils:js_escape(Body)])
+			wf:f("Nitrogen.$lookup('~s').$update(\"~s\");", [wf:get(current_id), wf_utils:js_escape(Body)])
 		];
 		false -> Body
 	end.

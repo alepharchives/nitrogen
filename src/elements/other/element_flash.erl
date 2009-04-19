@@ -15,7 +15,7 @@ render() ->
 update() -> update(any).
 update(element_flash) -> ok;
 update(_Module) ->
-	case wf:state(has_flash) == true andalso get(is_redirect) /= true of
+	case wf:state(has_flash) == true andalso wf:get(is_redirect) /= true of
 		true -> wf:insert_bottom(flash, get_flashes());
 	  _ -> ignore
 	end.

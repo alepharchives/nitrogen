@@ -22,6 +22,6 @@ render(_ControlID, Record) ->
 	
 	% Return the response.
 	[
-		wf:f("Nitrogen.$lookup('~s').$update(\"~s\");", [get(current_id), wf_utils:js_escape(Body)]),
+		wf:f("Nitrogen.$lookup('~s').$update(\"~s\");", [wf:get(current_id), wf_utils:js_escape(Body)]),
 		wf_script:get_script()
 	].

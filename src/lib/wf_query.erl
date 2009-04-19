@@ -13,7 +13,7 @@
 prepare_request_query_paths(Query) ->
 	% Get all query keys, convert them to reverse sorted paths.
 	Paths = [{wf_path:to_path(Ident), Value} || {Ident, Value} <- Query],
-	put(request_query_paths, Paths).
+	wf:put(request_query_paths, Paths).
 
 
 % q/1 - Lookup any query args that match Path.
@@ -31,7 +31,7 @@ q(Partial) when is_list(Partial) ->
 		false -> Partial
 	end,
 	
-	Paths = wf_utils:path_search(Partial1, 1, get(request_query_paths)),
+	Paths = wf_utils:path_search(Partial1, 1, wf:get(request_query_paths)),
 
 	% Pull out the values.
 	[Value || {_, Value} <- Paths].

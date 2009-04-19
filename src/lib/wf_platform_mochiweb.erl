@@ -110,13 +110,13 @@ get_header(Header) ->
 build_response() ->
 	% Get vars...
 	Req = wf_platform:get_request(),
-	Code = get(wf_response_code),
-	ContentType = get(wf_content_type),
-	Body = get(wf_response_body),
+	Code = wf:get(wf_response_code),
+	ContentType = wf:get(wf_content_type),
+	Body = wf:get(wf_response_body),
 
 	% Set the content-type...
 	wf_platform:set_header("Content-Type", ContentType),
-	Headers = get(wf_headers),
+	Headers = wf:get(wf_headers),
 	
 	% Send the mochiweb response...
 	Req:respond({Code, Headers, Body}).
@@ -131,7 +131,7 @@ recv_from_socket(Length, Timeout) ->
 	Socket = get_socket(),
 	case gen_tcp:recv(Socket, Length, Timeout) of
 		{ok, Data} -> 
-			put(mochiweb_request_recv, true),
+			wf:put(mochiweb_request_recv, true),
 			Data;
 		_Other -> 
 			exit(normal)

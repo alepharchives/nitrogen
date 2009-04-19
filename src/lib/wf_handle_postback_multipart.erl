@@ -9,7 +9,7 @@
 handle_request(Module) ->
 	% Parse the template...
  	{ok, Query, FileName, LocalFileData} = wf_multipart:parse_upload(),
-	put(request_query, Query),
+	wf:put(request_query, Query),
 	wf_query:prepare_request_query_paths(Query),
 	
 
@@ -24,8 +24,8 @@ handle_request(Module) ->
 	end,	
 	
 	% Setup the response...
-	put(current_id, ObjectID),
-	put(current_path, wf_path:to_path(TargetID)),
+	wf:put(current_id, ObjectID),
+	wf:put(current_path, wf_path:to_path(TargetID)),
 
 	% Create the postback...
 	NewTag = {upload, Tag, FileName, LocalFileData},
