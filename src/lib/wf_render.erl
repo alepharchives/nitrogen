@@ -28,8 +28,11 @@ me_var() ->
 
 render(undefined) -> "";
 render(Term) when is_binary(Term) -> Term;
+render([parallell|Terms]) ->
+    RenderQueue = [wf_parallell_render:queue(fun render/1, [X]) || X <- Terms],
+    wf_parallell_render:merge(RenderQueue);
 render(Terms=[H|_]) when is_list(Terms), is_integer(H) -> Terms;
-render(Terms) when is_list(Terms) ->[render(X) || X <- Terms];
+render(Terms) when is_list(Terms) -> [render(X) || X <- Terms];
 render(Term) when is_tuple(Term) ->
 	Base = wf_utils:get_elementbase(Term),
 	Module = Base#elementbase.module, 
@@ -67,7 +70,12 @@ render(Term) when is_tuple(Term) ->
 
 render_actions(_, _, undefined) -> [];
 render_actions(TriggerPath, TargetPath, Terms=[H|_]) when is_list(Terms), is_integer(H) -> render_actions(TriggerPath, TargetPath, #script { script=Terms });
-render_actions(TriggerPath, TargetPath, Terms) when is_list(Terms) -> [render_actions(TriggerPath, TargetPath, X) || X <- Terms];
+render_actions(TriggerPath, TargetPath, Terms) when is_list(Terms) -> 
+% -- either the original
+    [render_actions(TriggerPath, TargetPath, X) || X <- Terms];
+% -- or a parallell version
+%    RenderQueue = [wf_parallell_render:queue(fun render_actions/3, [TriggerPath, TargetPath, X]) || X <- Terms],
+%    wf_parallell_render:merge(RenderQueue);
 render_actions(TriggerPath, TargetPath, Term) when is_tuple(Term) ->
 	Base = wf_utils:get_actionbase(Term),
 	Module = Base#actionbase.module, 

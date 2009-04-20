@@ -14,7 +14,10 @@
 	  put/2,
 
 	  erase/0,
-	  erase/1
+	  erase/1,
+
+	  split/1,
+	  merge/1
 	 ]).
 
 
@@ -48,6 +51,15 @@ state(State) ->
 	    state(State1);
 	{erase, From, Key} ->
 	    State1 = do_erase(From, State, Key),
+	    state(State1);
+	{split, From, To} ->
+	    State1 = do_split(From, State, To),
+	    state(State1);
+	{merge, From, To} ->
+	    State1 = do_merge(From, State, To),
+	    state(State1);
+	{'DOWN', _, process, Pid, _} ->
+	    State1 = do_swipe(Pid, State),
 	    state(State1);
 	_ ->
 	    state(State)
@@ -89,7 +101,12 @@ do_get_keys(From, State) ->
     send_response(From, [element(1, E) || E <- lookup(From, State)]).
 
 do_put(From, State, Key, Value) ->
-    Dict = lookup(From, State),
+    Dict = case search(From, State, new) of
+	       new ->
+		   erlang:monitor(process, From),
+		   [];
+	       X -> X
+	   end,
     Res = lookup_value(Dict, Key),
     State1 = lists:keystore( 
 	       From, 1, State,
@@ -99,6 +116,14 @@ do_put(From, State, Key, Value) ->
 	       }),
     send_response(From, Res),
     State1.
+
+do_swipe(Pid, State) ->
+    case lists:keytake(Pid, 1, State) of
+	{value, _, State1} ->
+	    State1;
+	false ->
+	    State
+    end.
 
 do_erase(From, State) ->
     case lists:keytake(From, 1, State) of
@@ -120,6 +145,33 @@ do_erase(From, State, Key) ->
 	    send_response(From, undefined),		  
 	    State
     end.
+
+init_dict([], D) -> D;
+init_dict([Key|Keys], D) ->
+    init_dict(Keys, lists:keystore(Key, 1, D, {Key, []})).
+
+do_split(From, State, To) ->
+    send_response(From, ok),
+    L = [wf_action_queue, wf_update_queue, wf_content_script, wf_script],
+    lists:keystore(To, 1, State, {To, init_dict(L, lookup(From, State))}).
+
+merge_dict([], T, _) -> T;
+merge_dict([Key|Keys], T, F) ->
+    T1 = case lookup_value(F, Key) of
+	     [] -> T;
+	     FValue ->
+		 lists:keystore(
+		   Key, 1, T, 
+		   {Key, lists:flatten([FValue|lookup_value(T, Key)])}
+		  )
+	 end,
+    merge_dict(Keys, T1, F).
+
+do_merge(From, State, To) ->
+    send_response(From, ok),
+    L = [wf_action_queue, wf_update_queue, wf_content_script, wf_script],
+    lists:keystore(To, 1, State, {To, merge_dict(L, lookup(To, State), lookup(From, State))}).
+
 
 
 %%% API %%%
@@ -147,3 +199,12 @@ erase() ->
 erase(Key) ->
     ?MODULE!{erase, self(), Key},
     get_response().
+
+split(To) ->
+    ?MODULE!{split, self(), To},
+    get_response().
+
+merge(To) ->
+    ?MODULE!{merge, self(), To},
+    get_response().
+
